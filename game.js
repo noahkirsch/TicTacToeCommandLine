@@ -33,26 +33,26 @@ var makeMove = function() {
 
 }
 
-var checkWinner = function() {
-	if (board[0] === board[1] === board[2]) {
+var checkWinner = function(board) {
+	if (board[0] !== ' ' && board[0] === board[1] && board[0] === board[2]) {
 		return true;
-	} else if (board[3] === board[4] === board[5]) {
+	} else if (board[3] !== ' ' && board[3] === board[4] && board[3] === board[5]) {
 		return true;
-	} else if (board[6] === board[7] === board[8]) {
+	} else if (board[6] !== ' ' && board[6] === board[7] && board[6] === board[8]) {
 		return true;
-	} else if (board[0] === board[3] === board[6]) {
+	} else if (board[0] !== ' ' && board[0] === board[3] && board[0] === board[6]) {
 		return true;
-	} else if (board[1] === board[4] === board[7]) {
+	} else if (board[1] !== ' ' && board[1] === board[4] && board[1] === board[7]) {
 		return true;
-	} else if (board[2] === board[5] === board[8]) {
+	} else if (board[2] !== ' ' && board[2] === board[5] && board[2] === board[8]) {
 		return true;
-	} else if (board[0] === board[4] === board[8]) {
+	} else if (board[0] !== ' ' && board[0] === board[4] && board[0] === board[8]) {
 		return true;
-	} else if (board[2] === board[4] === board[6]) {
+	} else if (board[2] !== ' ' && board[2] === board[4] && board[2] === board[6]) {
 		return true;
+	} else {
+		return false;
 	}
-
-	return false;
 }
 
 var makeMove = function() {
@@ -60,24 +60,31 @@ var makeMove = function() {
 
 	prompt.get(['Move'], function (err, result) {
 	  if (err) { return onErr(err); }
-	  if (xMove) {
-	  	board[result.Move - 1] = 'X';
-	  } else {
-	  	board[result.Move - 1] = 'O';
-	  }
-	  console.log(printBoard());
 
-		if (checkWinner()) {
-			if (xMove) {
-				console.log("X Wins!");
+	  if (board[result.Move - 1] !== ' ') {
+	  	console.log('This is an Invalid Move!');
+	  	makeMove();
+	  } else {	  	
+		  if (xMove) {
+		  	board[result.Move - 1] = 'X';
+		  } else {
+		  	board[result.Move - 1] = 'O';
+		  }
+		  console.log(printBoard());
+
+			if (checkWinner(board)) {
+				if (xMove) {
+					console.log("X Wins!");
+					return;
+				} else {
+					console.log("O Wins!");
+					return;
+				}
 			} else {
-				console.log("O Wins!");
+				xMove = !xMove;
+				makeMove();
 			}
-		}
-
-		xMove = !xMove;
-
-	  makeMove();
+	  }
 	});
 }
 
