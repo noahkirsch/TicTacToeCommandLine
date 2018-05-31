@@ -55,6 +55,20 @@ var checkWinner = function(board) {
 	}
 }
 
+var newGame = function(winner) {
+	console.log(winner + " Wins! Type yes to play again!");
+	prompt.start();
+
+	prompt.get(['Restart'], function (err, result) {
+	  if (err) { return onErr(err); }
+	  if (result.Restart === 'yes') {
+	  	board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+	  	console.log(printBoard());
+	  	makeMove();
+	  }
+	});
+}
+
 var makeMove = function() {
 	prompt.start();
 
@@ -74,10 +88,10 @@ var makeMove = function() {
 
 			if (checkWinner(board)) {
 				if (xMove) {
-					console.log("X Wins!");
+					newGame('X');
 					return;
 				} else {
-					console.log("O Wins!");
+					newGame('O');
 					return;
 				}
 			} else {
